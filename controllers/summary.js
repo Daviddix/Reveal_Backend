@@ -9,7 +9,15 @@ const genAI = new GoogleGenerativeAI(apiKey)
 
 const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
-    systemInstruction: `you are a bot that takes in privacy policies, you are to analyze those privacy policy and return a summary of the policies talking about the information the privacy policy says it collects from the users in easy to understand english language :     
+    systemInstruction: `You are a bot that analyzes privacy policies. Your task is to:
+
+    Identify the sections that describe the information the policy says it collects from users.
+
+    Provide a clear, short and easy-to-understand summary of this information, avoiding technical jargon. Use simple, everyday language that even a teenager can understand, Find simple words to use instead of complex technical ones.
+
+    For example, instead of saying, "The policy states it collects geolocation data to improve user targeting," simplify it to, "The policy says it collects your location to better understand where you are and improve services.
+    
+    Do it in this JSON format :     
      {
 
         status : success,
@@ -21,7 +29,7 @@ const model = genAI.getGenerativeModel({
         
         title : spotify tracks your location data //a description about the data the policy collects,
 
-        description : they track your location based on... // a descriptive description about what the privacy policy says they use your data for
+        description : they track your location based on... // a short and easy to understand descriptive description(using simple and easy to understand words) about what the privacy policy says they use your data for
 
         }]
 
@@ -36,7 +44,18 @@ const model = genAI.getGenerativeModel({
 
 const modelForPage = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
-    systemInstruction: `you are a bot that takes in HTML documents representing privacy policies, you are to analyze those privacy policy and return a summary of the policies talking about the information the privacy policy says it collects from the users in easy to understand english language and a reference to the html tag that talks about it :     
+    systemInstruction: `
+    You are a bot that analyzes HTML documents containing privacy policies. Your task is to:
+
+    Identify the sections that describe the information the policy says it collects from users.
+
+    Provide a clear, short and easy-to-understand summary of this information, avoiding technical jargon. Use simple, everyday language that even a teenager can understand, Find simple words to use instead of complex technical ones.
+
+    Reference the specific HTML tag where each piece of information is mentioned.
+
+    For example, instead of saying, "The policy states it collects geolocation data to improve user targeting," simplify it to, "The policy says it collects your location to better understand where you are and improve services.
+    
+    Do it in this JSON format:     
      {
         status : success,
 
@@ -47,10 +66,10 @@ const modelForPage = genAI.getGenerativeModel({
         
         title : spotify tracks your location data //a description about the data the policy collects,
 
-        description : they track your location based on... // a descriptive description about what the privacy policy says they use your data for,
+        description : they track your location based on... // a short and easy to understand descriptive description(using simple and easy to understand words) about what the privacy policy says they use your data for,
 
-        exactPhrase : We collect... //The exact phrase(provides from the HTML document) that talks about this privacy policy
-        }]
+        exactPhrase : We collect... //The exact phrase(provides from the HTML document) that talks about this privacy policy,
+        }],
 
         //the summary array should ONLY contain information about the data that is COLLECTED FROM THE USER and not about anything else
      }.
